@@ -15,12 +15,28 @@
  */
 package com.shadow.settings.fragments;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.UserHandle;
+import android.provider.SearchIndexableResource;
+import android.provider.Settings;
+
+import androidx.preference.ListPreference;
+import androidx.preference.SwitchPreference;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceCategory;
+import androidx.preference.PreferenceScreen;
+import androidx.preference.Preference.OnPreferenceChangeListener;
+
+import com.android.settings.R;
+import com.android.settings.SettingsPreferenceFragment;
+
 import com.android.internal.logging.nano.MetricsProto;
 
-import android.os.Bundle;
-import com.android.settings.R;
-
-import com.android.settings.SettingsPreferenceFragment;
+import java.util.ArrayList;
+import java.util.List;
 
 public class QuickSettings extends SettingsPreferenceFragment {
 
@@ -29,6 +45,7 @@ public class QuickSettings extends SettingsPreferenceFragment {
         super.onCreate(icicle);
 
         addPreferencesFromResource(R.xml.shadow_settings_quicksettings);
+        PreferenceScreen prefSet = getPreferenceScreen();
     }
 
     @Override
