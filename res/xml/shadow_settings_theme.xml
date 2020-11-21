@@ -17,4 +17,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:settings="http://schemas.android.com/apk/res/com.android.settings">
 
+     <com.shadow.settings.preferences.colorpicker.ColorPickerPreference
+            android:key="accent_color"
+            android:title="@string/accent_color"
+            android:defaultValue="0xffffff"
+            android:persistent="false" />
+
 </PreferenceScreen>
