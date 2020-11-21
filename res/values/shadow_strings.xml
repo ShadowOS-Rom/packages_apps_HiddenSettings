@@ -30,6 +30,7 @@
     <string name="recents_title">Recents apps</string>
     <string name="statusbar_title">Status bar</string>
     <string name="volume_title">Volume Settings</string>
+    <string name="theme_title">Theming</string>
 
     <!-- General strings -->
     <string name="ok">OK</string>

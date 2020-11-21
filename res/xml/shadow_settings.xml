@@ -17,6 +17,13 @@
     xmlns:settings="http://schemas.android.com/apk/res/com.android.settings"
     android:title="@string/shadow_settings_title" >
 
+        <!-- Themes -->
+        <Preference
+            android:key="theme_category"
+            android:title="@string/theme_title"
+            android:fragment="com.shadow.settings.fragments.ThemeSettings"
+            android:icon="@drawable/ic_settings_statusbar"/>
+
         <!-- Status Bar -->
         <Preference
             android:key="statusbar_category"
