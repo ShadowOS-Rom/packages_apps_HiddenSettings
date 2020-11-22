@@ -24,7 +24,7 @@
     android:padding="4dp"
     android:orientation="vertical">
 
-    <net.margaritov.preference.colorpicker.ColorPickerView
+    <com.shadow.settings.preferences.colorpicker.ColorPickerView
         android:id="@+id/color_picker_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

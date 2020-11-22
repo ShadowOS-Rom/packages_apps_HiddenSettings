@@ -16,45 +16,52 @@
 package com.shadow.settings.fragments;
 
 import com.android.internal.logging.nano.MetricsProto;
+import androidx.preference.Preference;
 import android.os.SystemProperties;
 import android.os.Bundle;
 import com.android.settings.R;
 import com.shadow.settings.preferences.colorpicker.ColorPickerPreference;
-
+import android.os.UserHandle;
 import com.android.settings.SettingsPreferenceFragment;
+import android.content.om.IOverlayManager;
+import android.os.RemoteException;
+import android.graphics.Color;
+import androidx.preference.Preference.OnPreferenceChangeListener;
 
-public class ThemeSettings extends SettingsPreferenceFragment {
+public class ThemeSettings extends SettingsPreferenceFragment implements OnPreferenceChangeListener {
     private static final String ACCENT_COLOR = "accent_color";
     private static final String ACCENT_COLOR_PROP = "persist.sys.theme.accentcolor";
     private static final String GRADIENT_COLOR = "gradient_color";
     private static final String GRADIENT_COLOR_PROP = "persist.sys.theme.gradientcolor";
 
+    private IOverlayManager mOverlayService;
     private ColorPickerPreference mThemeColor;
     private ColorPickerPreference mGradientColor;
 
-    @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         if (preference == mThemeColor) {
             int color = (Integer) newValue;
             String hexColor = String.format("%08X", (0xFFFFFFFF & color));
             SystemProperties.set(ACCENT_COLOR_PROP, hexColor);
-            mOverlayService.reloadAndroidAssets(UserHandle.USER_CURRENT);
-            mOverlayService.reloadAssets("com.android.settings", UserHandle.USER_CURRENT);
-            mOverlayService.reloadAssets("com.android.systemui", UserHandle.USER_CURRENT);
-        } else if (preference == mGradientColor) {
-            int color = (Integer) objValue;
+            try{
+		mOverlayService.reloadAndroidAssets(UserHandle.USER_CURRENT);
+            	mOverlayService.reloadAssets("com.android.settings", UserHandle.USER_CURRENT);
+            	mOverlayService.reloadAssets("com.android.systemui", UserHandle.USER_CURRENT);
+        } catch (RemoteException ignored) {
+        }
+	} else if (preference == mGradientColor) {
+            int color = (Integer) newValue;
             String hexColor = String.format("%08X", (0xFFFFFFFF & color));
             SystemProperties.set(GRADIENT_COLOR_PROP, hexColor);
-            try {
-                 mOverlayService.reloadAndroidAssets(UserHandle.USER_CURRENT);
-                 mOverlayService.reloadAssets("com.android.settings", UserHandle.USER_CURRENT);
-                 mOverlayService.reloadAssets("com.android.systemui", UserHandle.USER_CURRENT);
-             } catch (RemoteException ignored) {
-             }
+            try{
+		mOverlayService.reloadAndroidAssets(UserHandle.USER_CURRENT);
+            	mOverlayService.reloadAssets("com.android.settings", UserHandle.USER_CURRENT);
+            	mOverlayService.reloadAssets("com.android.systemui", UserHandle.USER_CURRENT);
+        } catch (RemoteException ignored) {
         }
+	}
         return true;
     }
-    @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
