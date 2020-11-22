@@ -26,8 +26,11 @@ import com.android.settings.SettingsPreferenceFragment;
 public class ThemeSettings extends SettingsPreferenceFragment {
     private static final String ACCENT_COLOR = "accent_color";
     private static final String ACCENT_COLOR_PROP = "persist.sys.theme.accentcolor";
+    private static final String GRADIENT_COLOR = "gradient_color";
+    private static final String GRADIENT_COLOR_PROP = "persist.sys.theme.gradientcolor";
 
     private ColorPickerPreference mThemeColor;
+    private ColorPickerPreference mGradientColor;
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -38,6 +41,16 @@ public class ThemeSettings extends SettingsPreferenceFragment {
             mOverlayService.reloadAndroidAssets(UserHandle.USER_CURRENT);
             mOverlayService.reloadAssets("com.android.settings", UserHandle.USER_CURRENT);
             mOverlayService.reloadAssets("com.android.systemui", UserHandle.USER_CURRENT);
+        } else if (preference == mGradientColor) {
+            int color = (Integer) objValue;
+            String hexColor = String.format("%08X", (0xFFFFFFFF & color));
+            SystemProperties.set(GRADIENT_COLOR_PROP, hexColor);
+            try {
+                 mOverlayService.reloadAndroidAssets(UserHandle.USER_CURRENT);
+                 mOverlayService.reloadAssets("com.android.settings", UserHandle.USER_CURRENT);
+                 mOverlayService.reloadAssets("com.android.systemui", UserHandle.USER_CURRENT);
+             } catch (RemoteException ignored) {
+             }
         }
         return true;
     }
@@ -47,6 +60,7 @@ public class ThemeSettings extends SettingsPreferenceFragment {
 
         addPreferencesFromResource(R.xml.shadow_settings_theme);
         setupAccentPref();
+        setupGradientPref();
     }
 
     private void setupAccentPref() {
@@ -57,6 +71,16 @@ public class ThemeSettings extends SettingsPreferenceFragment {
                 : Color.parseColor("#" + colorVal);
         mThemeColor.setNewPreviewColor(color);
         mThemeColor.setOnPreferenceChangeListener(this);
+    }
+
+    private void setupGradientPref() {
+        mGradientColor = (ColorPickerPreference) findPreference(GRADIENT_COLOR);
+        String colorVal = SystemProperties.get(GRADIENT_COLOR_PROP, "-1");
+        int color = "-1".equals(colorVal)
+                ? Color.WHITE
+                : Color.parseColor("#" + colorVal);
+        mGradientColor.setNewPreviewColor(color);
+        mGradientColor.setOnPreferenceChangeListener(this);
     }
 
     @Override
